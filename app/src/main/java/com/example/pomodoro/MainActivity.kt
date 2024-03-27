@@ -35,13 +35,17 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         val start:Button=findViewById(R.id.start)
         val stop:Button=findViewById(R.id.stopButton)
+        val sendNotification:Button=findViewById(R.id.notifButton)
 
         start.setOnClickListener {
             startTimer()
         }
         stop.setOnClickListener {
             stoptimer()
+        }
 
+        sendNotification.setOnClickListener{
+            sendNotification(this)
         }
         
     }
@@ -59,8 +63,8 @@ class MainActivity : AppCompatActivity() {
                     launcher.launch(Manifest.permission.POST_NOTIFICATIONS)
                 }
             }
+        }
     }
-
 
      private fun startTimer() {
         val time = 5 * 60 * 1000L
@@ -93,6 +97,5 @@ class MainActivity : AppCompatActivity() {
         cdTimer?.cancel()
         println("STOP")
     }
-
 
 }

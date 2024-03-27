@@ -16,31 +16,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <LinearLayout
+        <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:id="@+id/taskName"
-                style="@style/TextAppearance.AppCompat.Title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="20dp"
-                android:layout_marginTop="20dp"
-                android:fontFamily="sans-serif-medium"
-                android:gravity="center"
-                android:text="@string/task_name" />
-
-            <TextView
-                android:id="@+id/taskDesc"
-                style="@style/TextAppearance.AppCompat.Title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="20dp"
-                android:fontFamily="sans-serif-medium"
-                android:gravity="center"
-                android:text="@string/task_desc" />
-        </LinearLayout>
+            android:layout_height="match_parent"
+            android:id="@+id/todoListRecyclerView"
+            android:backgroundTint="@color/design_default_color_background"
+            />
 
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/newTaskButton"

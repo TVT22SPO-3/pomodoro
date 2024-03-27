@@ -10,34 +10,36 @@ import java.util.UUID
 
 class TaskViewModel: ViewModel()
 {
-    var taskItem = MutableLiveData<MutableList<TaskItem>>()
+    var taskItems = MutableLiveData<MutableList<TaskItem>>()
+    var name = MutableLiveData<String>()
+    var desc = MutableLiveData<String>()
 
     init {
-        taskItem.value = mutableListOf()
+        taskItems.value = mutableListOf()
     }
 
     fun addTaskItem(newTask: TaskItem){
-        val list = taskItem.value
+        val list = taskItems.value
         list!!.add(newTask)
-        taskItem.postValue(list)
+        taskItems.postValue(list)
     }
 
     fun updateTaskItem(id:UUID, name: String, desc: String, dueTime: LocalTime?){
-        val list = taskItem.value
+        val list = taskItems.value
         val task = list!!.find { it.id == id }!!
         task.name = name
         task.desc = desc
         task.dueTime = dueTime
-        taskItem.postValue(list)
+        taskItems.postValue(list)
     }
 
 
     fun setCompleted(taskItem: TaskItem){
-        val list = taskItem.value
+        val list = taskItems.value
         val task = list!!.find { it.id == taskItem.id }!!
         if (task.completedDate == null)
             task.completedDate = LocalDate.now()
-        taskItem.postValue(list)
+        taskItems.postValue(list)
     }
 
 }

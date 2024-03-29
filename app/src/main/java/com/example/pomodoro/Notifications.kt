@@ -3,7 +3,9 @@ package com.example.pomodoro
 import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
 import android.os.Build
 import android.os.CountDownTimer
 import android.os.SystemClock
@@ -23,12 +25,17 @@ const val REQUEST_NOTIFICATION_PERMISSION = 1001
 
 fun sendNotification(context: Context) {
     println("notification sent222")
+    val intent = Intent(context, MainActivity::class.java).apply {
+        flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+    }
+    val pendingIntent: PendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE)
     // Create a notification builder
     val builder = NotificationCompat.Builder(context, CHANNEL_ID)
         .setSmallIcon(R.drawable.ic_launcher_foreground)
         .setContentTitle("Aika on loppunut")
         .setContentText("Aika loppui, starttia painamalla ajastin käynnistyy uudelleen")
         .setPriority(NotificationCompat.PRIORITY_LOW)
+        .setContentIntent(pendingIntent)
         .setAutoCancel(true)
 
     with(NotificationManagerCompat.from(context)) {

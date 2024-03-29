@@ -84,7 +84,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         sendNotification.setOnClickListener {
-
+            sendNotification(this)
         }
 
     }

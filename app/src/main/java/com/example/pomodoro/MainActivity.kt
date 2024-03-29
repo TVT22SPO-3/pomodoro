@@ -8,19 +8,23 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import android.Manifest
-import android.os.CountDownTimer
 import android.widget.Button
 import android.widget.TextView
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
+import kotlin.concurrent.timer
 
 
 class MainActivity : AppCompatActivity() {
 
-    private var cdTimer: CountDownTimer? = null
+    private lateinit var viewModel: TimerViewModel
+    private var timerOn = false
 
     private val launcher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { isGranted ->
-        if (isGranted){
+        if (isGranted) {
             // permission granted
         } else {
             // permission denied or forever denied
@@ -31,31 +35,77 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         createNotificationChannel(this)
         checkNotificationPermission()
-
+        viewModel = ViewModelProvider(this).get(TimerViewModel::class.java)
         setContentView(R.layout.activity_main)
-        val start:Button=findViewById(R.id.start)
-        val stop:Button=findViewById(R.id.stopButton)
-        val sendNotification:Button=findViewById(R.id.notifButton)
+        val start: Button = findViewById(R.id.start)
+        val stop: Button = findViewById(R.id.stopButton)
+        val sendNotification: Button = findViewById(R.id.notifButton)
+        val pomodoro: Button = findViewById(R.id.pomodoro)
+        val sbreak: Button = findViewById(R.id.Sbreak)
+        val lbreak: Button = findViewById(R.id.Lbreak)
+        val timerView: TextView = findViewById(R.id.timerView)
+
+        lifecycleScope.launch {
+
+            viewModel.uiState.collect { pomodoroUiState ->
+                timerView.text = pomodoroUiState.time
+                println(pomodoroUiState.time)
+                if(pomodoroUiState.time == "00:00") {
+                    sendNotification(this@MainActivity)
+                }
+            }
+
+        }
 
         start.setOnClickListener {
-            startTimer()
+            if (!viewModel.uiState.value.timerOn) {
+                viewModel.uiState.value.timerOn = true
+                viewModel.startTimer()
+            }
         }
         stop.setOnClickListener {
-            stoptimer()
+            viewModel.stoptimer()
+            viewModel.uiState.value.timerOn = false
         }
 
-        sendNotification.setOnClickListener{
-            sendNotification(this)
+        pomodoro.setOnClickListener {
+        val pomodoroTime = 25
+        viewModel.setTimer(25)
         }
-        
+
+        sbreak.setOnClickListener {
+            val pomodoroTime = 5
+            viewModel.setTimer(5)
+        }
+
+        lbreak.setOnClickListener {
+            val pomodoroTime = 30
+            viewModel.setTimer(30)
+        }
+
+        sendNotification.setOnClickListener {
+
+        }
+
     }
+
+
+
 
     private fun checkNotificationPermission() {
 
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.POST_NOTIFICATIONS
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
             // permission granted
         } else {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.POST_NOTIFICATIONS)) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(
+                    this,
+                    Manifest.permission.POST_NOTIFICATIONS
+                )
+            ) {
                 // show rationale and then launch launcher to request permission
             } else {
                 // first request or forever denied case
@@ -65,37 +115,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-
-     private fun startTimer() {
-        val time = 5 * 60 * 1000L
-        println("TimerStart")
-        cdTimer = object : CountDownTimer(time, 1000) {
-
-            override fun onTick(millisUntilFinished: Long) {
-
-                println("CountDown")
-
-                var minutes = millisUntilFinished / 60 / 1000
-                var seconds = millisUntilFinished / 1000 % 60
-
-                println("$minutes:$seconds")
-
-                val timeView:TextView=findViewById(R.id.timerView)
-                timeView.text = "$minutes:$seconds"
-
-            }
-
-            override fun onFinish() {
-                println("Finish")
-
-            }
-
-        }.start()
-    }
-
-     private fun stoptimer() {
-        cdTimer?.cancel()
-        println("STOP")
-    }
-
 }
+
+

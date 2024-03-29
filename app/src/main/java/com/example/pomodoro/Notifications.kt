@@ -1,16 +1,17 @@
 package com.example.pomodoro
 
+import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
-import android.content.pm.PackageManager
 import android.os.Build
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.app.ActivityCompat
-import androidx.core.app.ActivityCompat.shouldShowRequestPermissionRationale
+import android.os.CountDownTimer
+import android.os.SystemClock
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import androidx.core.content.ContextCompat.checkSelfPermission
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 
 
 const val CHANNEL_ID = "YOUR_CHANNEL_ID"
@@ -18,14 +19,16 @@ val NOTIFICATION_ID = System.currentTimeMillis().toInt()
 // Constants
 const val REQUEST_NOTIFICATION_PERMISSION = 1001
 
+
+
 fun sendNotification(context: Context) {
     println("notification sent222")
     // Create a notification builder
     val builder = NotificationCompat.Builder(context, CHANNEL_ID)
         .setSmallIcon(R.drawable.ic_launcher_foreground)
-        .setContentTitle("Notificaatioon")
-        .setContentText("Tämä on testi ilmoitus!!")
-        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+        .setContentTitle("Aika on loppunut")
+        .setContentText("Aika loppui, starttia painamalla ajastin käynnistyy uudelleen")
+        .setPriority(NotificationCompat.PRIORITY_LOW)
         .setAutoCancel(true)
 
     with(NotificationManagerCompat.from(context)) {
@@ -33,6 +36,9 @@ fun sendNotification(context: Context) {
     }
 
 }
+
+
+
 
 fun createNotificationChannel(context: Context) {
 

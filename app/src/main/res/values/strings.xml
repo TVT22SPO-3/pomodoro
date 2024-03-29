@@ -2,5 +2,6 @@
     <string name="app_name">Pomodoro</string>
     <string name="channel_name">Notifications</string>
     <string name="channel_description">These are notifications</string>
+    <string name="loppu">Aika on loppunut</string>
 
 </resources>

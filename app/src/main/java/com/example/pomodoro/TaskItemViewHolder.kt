@@ -2,9 +2,12 @@ package com.example.pomodoro
 
 import android.content.Context
 import android.graphics.Paint
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pomodoro.databinding.TaskItemCellBinding
 import java.time.format.DateTimeFormatter
+
 
 class TaskItemViewHolder(
     private val context: Context,
@@ -12,7 +15,9 @@ class TaskItemViewHolder(
     private val clickListener: TaskItemClickListener
 ): RecyclerView.ViewHolder(binding.root) {
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private val timeFormat = DateTimeFormatter.ofPattern("HH:mm")
+    @RequiresApi(Build.VERSION_CODES.O)
     fun bindTaskItem(taskItem: TaskItem){
         binding.name.text = taskItem.name
 

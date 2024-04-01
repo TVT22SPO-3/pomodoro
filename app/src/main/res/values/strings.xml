@@ -10,4 +10,8 @@
     <string name="checkbox">CheckBox</string>
     <string name="select_time">Select Time</string>
     <string name="save">Save</string>
+    <string name="channel_name">Notifications</string>
+    <string name="channel_description">These are notifications</string>
+    <string name="loppu">Aika on loppunut</string>
+
 </resources>

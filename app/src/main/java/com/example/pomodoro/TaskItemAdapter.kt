@@ -1,7 +1,9 @@
 package com.example.pomodoro
 
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pomodoro.databinding.TaskItemCellBinding
 
@@ -15,6 +17,7 @@ class TaskItemAdapter(
         return TaskItemViewHolder(parent.context, binding, clickListener)
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: TaskItemViewHolder, position: Int) {
         holder.bindTaskItem(taskItems[position])
     }

@@ -3,9 +3,11 @@ package com.example.pomodoro
 
 import android.os.CountDownTimer
 import androidx.lifecycle.ViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import java.util.Scanner
 
 class TimerViewModel() : ViewModel() {
 
@@ -46,6 +48,9 @@ class TimerViewModel() : ViewModel() {
                 val message = ("Aika on loppunut")
                 _uiState.value.timerOn = false
 
+
+
+
             }
 
         }.start()
@@ -55,6 +60,8 @@ class TimerViewModel() : ViewModel() {
         cdTimer?.cancel()
         println("STOP")
     }
+
+
 
 
 

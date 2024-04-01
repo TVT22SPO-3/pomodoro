@@ -99,14 +99,13 @@ class MainActivity : AppCompatActivity() {
                 Manifest.permission.POST_NOTIFICATIONS
             ) == PackageManager.PERMISSION_GRANTED
         ) {
-            // permission granted
+            println("permission granted")
         } else {
             if (ActivityCompat.shouldShowRequestPermissionRationale(
                     this,
                     Manifest.permission.POST_NOTIFICATIONS
                 )
             ) {
-                // show rationale and then launch launcher to request permission
             } else {
                 // first request or forever denied case
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {

@@ -8,12 +8,15 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import android.Manifest
+import android.util.Log
 import android.widget.Button
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
 import kotlin.concurrent.timer
+import androidx.lifecycle.Observer
+import kotlinx.coroutines.flow.collect
 
 
 class MainActivity : AppCompatActivity() {
@@ -45,17 +48,17 @@ class MainActivity : AppCompatActivity() {
         val lbreak: Button = findViewById(R.id.Lbreak)
         val timerView: TextView = findViewById(R.id.timerView)
 
-        lifecycleScope.launch {
 
-            viewModel.uiState.collect { pomodoroUiState ->
-                timerView.text = pomodoroUiState.time
-                println(pomodoroUiState.time)
-                if(pomodoroUiState.time == "00:00") {
-                    sendNotification(this@MainActivity)
-                }
+
+        viewModel.timeState.observe(this, Observer{
+                value  ->
+            timerView.text = value.toString()
+            if(value == "00:00"){
+                sendNotification(this@MainActivity)
             }
+        })
 
-        }
+
 
         start.setOnClickListener {
             if (!viewModel.uiState.value.timerOn) {
@@ -66,6 +69,7 @@ class MainActivity : AppCompatActivity() {
         stop.setOnClickListener {
             viewModel.stoptimer()
             viewModel.uiState.value.timerOn = false
+            
         }
 
         pomodoro.setOnClickListener {
@@ -116,5 +120,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 }
+
+
 
 

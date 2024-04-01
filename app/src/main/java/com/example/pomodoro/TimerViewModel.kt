@@ -2,17 +2,23 @@ package com.example.pomodoro
 
 
 import android.os.CountDownTimer
+import android.widget.TextView
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
+
 class TimerViewModel() : ViewModel() {
 
     val _uiState = MutableStateFlow(pomodoroUiState())
-    val uiState: StateFlow<pomodoroUiState> = _uiState.asStateFlow()
-    private var cdTimer: CountDownTimer? = null
+    var uiState: StateFlow<pomodoroUiState> = _uiState.asStateFlow()
+    val timeState: MutableLiveData<String> by lazy {
+        MutableLiveData<String>()
+    }
 
+    private var cdTimer: CountDownTimer? = null
 
 
     fun setTimer(time: Int) {
@@ -20,7 +26,7 @@ class TimerViewModel() : ViewModel() {
         _uiState.value = currentState.copy(pomodoro = time)
     }
 
-     fun startTimer() {
+     fun startTimer( ) {
 
         val time = _uiState.value.pomodoro * 60 * 1000L
         println("TimerStart")
@@ -37,6 +43,8 @@ class TimerViewModel() : ViewModel() {
                 val timertime = String.format("%02d:%02d", minutes, seconds)
 
                 _uiState.value = pomodoroUiState(time = timertime)
+                timeState.postValue(timertime)
+
 
             }
 
